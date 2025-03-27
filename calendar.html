@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="calendar.css">
+    <title>Calendar</title>
+</head>
+<body>
+    <div class="calendar-container">
+        <header>
+            <h1 id="monthYear"></h1>
+            <div class="buttons">
+                <button id="prev">Previous</button>
+                <button id="next">Next</button>
+            </div>
+        </header>
+        <div id="calendar" class="calendar"></div>
+    </div>
+
+    <div id="pop" class="pop">
+        <div class="pop-content">
+            <span id="close" class="close">&times;</span>
+            <h2>Event Details</h2>
+            <label for="eventDate">Date:</label>
+            <input type="date" id="eventDate">
+            <label for="eventTime">Time:</label>
+            <input type="time" id="eventTime">
+            <label for="eventDescription">Description:</label>
+            <textarea id="eventDescription"></textarea>
+            <button id="saveEvent">Save</button>
+        </div>
+    </div>
+
+    <script src="calendar.js"></script>
+</body>
+</html>
