@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Meal Macro Generator – Bariatric App</title>
+  <link rel="stylesheet" href="../css/macro.css">
+  <!-- 引入 Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Daily Meal Macro Generator</h1>
+  </header>
+
+  <main class="container">
+    <section class="control">
+      <button id="generate-btn">Generate Today's Meal Plan</button>
+    </section>
+
+    <section class="chart-area">
+      <canvas id="mealMacroChart"></canvas>
+    </section>
+
+
+    <section class="meal-plan">
+      <h2>Today's Meal Plan</h2>
+      <ul id="meal-list"></ul>
+    </section>
+  </main>
+
+  <script src="../js/macro.js"></script>
+</body>
+</html>

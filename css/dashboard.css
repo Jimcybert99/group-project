@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0 20px;
+    background-color: #f4f4f4;
+  }
+  
+  header {
+    background-color: #4caf50;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  section {
+    margin: 20px 0;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .cards {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    flex: 1 1 150px;
+    background-color: #e0f7fa;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  .card:hover{
+    scale: 1.1;
+    border: black 4px;
+    border-radius: 3px;
+    transition: 0.7s;
+    background-color:rgb(45, 159, 159);
+  }
+  #bmi-calculator form {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    gap: 10px;
+  }
+  
+  #bmi-result {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+    

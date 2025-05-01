@@ -1,0 +1,70 @@
+
+<!doctype html>
+<html lang="en">
+<!--Head section: contains title, styles  -->
+<head>
+  <meta charset="UTF-8">
+  <title>Exercise Dashboard</title>
+<!--CSS file-->
+  <link rel="stylesheet" href="../css/ex.css">
+</head>
+<!--page content-->
+<body>
+  <!-- Back to homepage button -->
+  <a href="../html/homepage.html" class="home" >&larr; Home</a>
+<!-- page header -->
+  <header>
+    <h1>Exercise Dashboard</h1>
+    <p>Select exercises and log today's workout!</p>
+  </header>
+
+<!--page content-->
+  <main>
+    <!--exercise list box-->
+    <div class="exList">
+      <h2>Available Exercises</h2>
+      <!--scrollable/interactable list of exercises-->
+      <div id="exBox"></div>
+      <!--buttons manage list, accidental funny name-->
+      <div class="exBox-controller">
+        <button id="add">Add New</button><!--add exercise-->
+        <button id="remove">Remove Selected</button><!--remove exercise-->
+      </div>
+    </div>
+    
+    <!--show selected exercises-->
+    <div>
+      <h2>Today's Workout</h2>
+      <div id="exLog"></div><!--dynamic population of exercises-->
+    </div>
+
+    <!--button to submitted the day's workout-->
+    <div class="displayOrSubmit">
+      <button id="submit">Submit Workout</button><!--display workout summary-->
+    </div>
+
+    <!--link to progress charts-->
+    <div class="chart">
+      <button onclick="location.href='progress.html'">Display Charts</button>
+    </div>
+
+  <!--display summary upon submission -->
+    <div id="openSummary" class="pop" style="display:none;"><!--hide window-->
+      <div class="workout">
+        <span id="closeSummary" class="close">&times;</span>
+        <h2>Workout Summary</h2>
+        <!--list of workout entries -->
+        <ul id="summaryList"></ul>
+      </div>
+    </div>
+    
+</main>
+
+  <footer>
+    <p>&copy; Bariatric Health Portal</p>
+  </footer>
+
+<!-- link js file -->
+  <script src="../js/ex.js"></script>
+</body>
+</html>

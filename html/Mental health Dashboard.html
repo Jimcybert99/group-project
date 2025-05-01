@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayo Clinic - Emotional Health Tracker</title>
+    <link rel="stylesheet" href="../css/Mental health Dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Mental & Emotional Health Tracker</h1>
+    </header>
+    
+    <div class="container">
+        <div class="date-display">
+            Today is <span id="current-date">Wednesday, October 25, 2023</span>
+        </div>
+        
+        <div class="mood-tracker">
+            <h2>How are you feeling today?</h2>
+            
+            <div class="mood-options">
+                <div class="mood-option selected">
+                    <div class="mood-icon">😊</div>
+                    <div>Happy</div>
+                </div>
+                <div class="mood-option">
+                    <div class="mood-icon">😐</div>
+                    <div>Neutral</div>
+                </div>
+                <div class="mood-option">
+                    <div class="mood-icon">😔</div>
+                    <div>Sad</div>
+                </div>
+                <div class="mood-option">
+                    <div class="mood-icon">😠</div>
+                    <div>Angry</div>
+                </div>
+                <div class="mood-option">
+                    <div class="mood-icon">😰</div>
+                    <div>Anxious</div>
+                </div>
+            </div>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Energy Level</span>
+                    <span id="energy-value">5</span>/10
+                </div>
+                <input type="range" min="1" max="10" value="5" class="slider" id="energy-slider">
+            </div>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Stress Level</span>
+                    <span id="stress-value">3</span>/10
+                </div>
+                <input type="range" min="1" max="10" value="3" class="slider" id="stress-slider">
+            </div>
+            
+            <h3>Journal Entry (Optional)</h3>
+            <textarea placeholder="Write about your thoughts, feelings, or anything you'd like to share..."></textarea>
+            
+            <button class="btn">Save Today's Entry</button>
+        </div>
+        
+        <div class="tips-section">
+            <h3>Personalized Tips Based on Your Mood</h3>
+            <p>Since you're feeling happy today with moderate energy, consider:</p>
+            <ul>
+                <li>Celebrating small victories in your weight loss journey</li>
+                <li>Sharing your positive mood with a support group member</li>
+                <li>Taking a walk to enjoy your good mood and maintain activity</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2023 Mayo Clinic. All rights reserved.
+    </footer>
+    
+    <script>
+  
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date();
+        document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
+
+        const moodOptions = document.querySelectorAll('.mood-option');
+        moodOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                moodOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                updateTips();
+            });
+        });
+ 
+        const energySlider = document.getElementById('energy-slider');
+        const stressSlider = document.getElementById('stress-slider');
+        const energyValue = document.getElementById('energy-value');
+        const stressValue = document.getElementById('stress-value');
+        
+        energySlider.addEventListener('input', () => {
+            energyValue.textContent = energySlider.value;
+            updateTips();
+        });
+        
+        stressSlider.addEventListener('input', () => {
+            stressValue.textContent = stressSlider.value;
+            updateTips();
+        });
+        
+        function updateTips() {
+            console.log("Updating tips based on user input");
+        }
+    </script>
+</body>
+</html>

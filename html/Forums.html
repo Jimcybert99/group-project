@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayo Clinic - Bariatric Forum</title>
+    <link rel="stylesheet" href="../css/Forums.css">
+</head>
+<body>
+
+    <div class="title-bar">
+        <h1>Forum</h1>
+        <div class="current-date" id="current-date"></div>
+    </div>
+    
+    <div class="nav-bar">
+        <ul class="nav-links">
+            <li class="active" data-section="message-board"><a href="#">Message Board</a></li>
+            <li data-section="history"><a href="#">My History</a></li>
+            <li data-section="ask-experts"><a href="#">Ask Experts</a></li>
+        </ul>
+    </div>
+
+    <section id="message-board" class="content-section active-section">
+        <h2>Community Message Board</h2>
+        <div class="messages-container">
+            <div class="message" data-id="1">
+                <div class="message-header">
+                    <span>John D.</span>
+                    <span>April 15, 2025</span>
+                </div>
+                <p>Has anyone experienced increased energy levels after the 3-month mark? I've noticed a significant improvement in my daily activities.</p>
+            </div>
+            
+            <div class="message" data-id="2">
+                <div class="message-header">
+                    <span>Sarah M.</span>
+                    <span>April 14, 2025</span>
+                </div>
+                <p>Looking for recipe ideas that meet the protein requirements but are also vegetarian-friendly. Any suggestions?</p>
+            </div>
+            
+            <div class="message" data-id="3">
+                <div class="message-header">
+                    <span>Robert T.</span>
+                    <span>April 13, 2025</span>
+                </div>
+                <p>Just wanted to share that I've hit my 6-month goal weight! This community has been incredibly supportive throughout my journey.</p>
+            </div>
+        </div>
+        
+        <div class="message-form">
+            <h3>Post a Message</h3>
+            <textarea placeholder="Share your thoughts with the community..."></textarea>
+            <button class="submit-btn">Post Message</button>
+        </div>
+    </section>
+
+    <section id="history" class="content-section">
+        <h2>My Discussion History</h2>
+        
+        <div class="history-item" data-id="101">
+            <div class="history-header">
+                <span>Protein Supplement Question</span>
+                <span>April 5, 2025</span>
+            </div>
+            <p>Asked about recommended protein supplements during the liquid diet phase</p>
+            <p><strong>8 replies</strong> | <strong>Last reply: April 5, 2025</strong></p>
+        </div>
+        
+        <div class="history-item" data-id="102">
+            <div class="history-header">
+                <span>Exercise Progress</span>
+                <span>April 6, 2025</span>
+            </div>
+            <p>Shared my 3-month exercise milestones and routine</p>
+            <p><strong>12 replies</strong> | <strong>Last reply: April 6, 2025</strong></p>
+        </div>
+        
+        <div class="history-item" data-id="103">
+            <div class="history-header">
+                <span>Emotional Challenges</span>
+                <span>April 7, 2025</span>
+            </div>
+            <p>Discussed emotional eating patterns and received support</p>
+            <p><strong>15 replies</strong> | <strong>Last reply: April 7, 2025</strong></p>
+        </div>
+    </section>
+ 
+    <section id="ask-experts" class="content-section">
+        <h2>Ask Our Medical Experts</h2>
+        <p>Select an expert to ask your question:</p>
+        
+        <div class="expert-options">
+            <div class="expert-card" data-id="201">
+                <div class="expert-name">Dr. Emily Johnson</div>
+                <div class="expert-specialty">Bariatric Surgeon</div>
+                <p>Specializes in post-operative care and nutritional guidance</p>
+            </div>
+            
+            <div class="expert-card" data-id="202">
+                <div class="expert-name">Dr. Michael Chen</div>
+                <div class="expert-specialty">Nutrition Specialist</div>
+                <p>Expert in dietary plans and vitamin supplementation</p>
+            </div>
+            
+            <div class="expert-card" data-id="203">
+                <div class="expert-name">Dr. Sarah Williams</div>
+                <div class="expert-specialty">Psychologist</div>
+                <p>Focuses on emotional adjustment and behavior modification</p>
+            </div>
+        </div>
+        
+        <div class="message-form">
+            <h3>Your Question</h3>
+            <textarea placeholder="Type your question for the selected expert..."></textarea>
+            <button class="submit-btn">Submit Question</button>
+        </div>
+    </section>
+
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-title" id="modalTitle">Details</h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+ 
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+    
+        const navItems = document.querySelectorAll('.nav-links li');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+   
+                navItems.forEach(navItem => navItem.classList.remove('active'));
+
+                this.classList.add('active');
+
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active-section');
+                });
+    
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active-section');
+            });
+        });
+
+        const modal = document.getElementById('detailModal');
+        const closeBtn = document.querySelector('.close-btn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        const messageDetails = {
+            1: {
+                title: "Energy Levels Discussion",
+                content: "<p><strong>John D.</strong> asked about energy levels after 3 months post-surgery.</p><p>\"I've noticed my energy levels have significantly improved since hitting the 3-month mark. I can now walk for 30 minutes without feeling exhausted, which was impossible before surgery. Has anyone else experienced this?\"</p><div class='replies'><h3>Replies:</h3><p><strong>Lisa K.</strong> (Oct 16, 2023): \"Yes! I experienced the same around 3 months. My doctor said it's because my body had adjusted to the new eating pattern and was getting proper nutrition.\"</p><p><strong>Mark T.</strong> (Oct 17, 2023): \"For me it was around 4 months when I really noticed the difference. Keep it up!\"</p></div>"
+            },
+            2: {
+                title: "Vegetarian Recipes Request",
+                content: "<p><strong>Sarah M.</strong> is looking for vegetarian-friendly recipes.</p><p>\"I'm struggling to meet my protein requirements with vegetarian options. Does anyone have good recipes that provide at least 20g of protein per meal?\"</p><div class='replies'><h3>Replies:</h3><p><strong>Priya N.</strong> (Oct 13, 2023): \"I make a great tofu scramble with 25g protein. Here's the recipe...\"</p><p><strong>Carlos R.</strong> (Oct 14, 2023): \"Lentil soups work well for me. I can share my favorite recipe.\"</p></div>"
+            },
+            3: {
+                title: "Success Story",
+                content: "<p><strong>Robert T.</strong> shares his success story.</p><p>\"Today I hit my 6-month goal weight! I've lost 85 pounds and feel like a new person. The first month was tough, but sticking to the nutrition plan made all the difference.\"</p><div class='replies'><h3>Replies:</h3><p><strong>Dr. Johnson</strong> (Oct 11, 2023): \"Congratulations Robert! Your dedication is inspiring.\"</p><p><strong>Jenny L.</strong> (Oct 12, 2023): \"This gives me so much hope! I'm just starting my journey.\"</p></div>"
+            }
+        };
+
+        const historyDetails = {
+            101: {
+                title: "Protein Supplement Discussion",
+                content: "<p>You asked about protein supplements during your liquid diet phase on Sep 28, 2023.</p><p><strong>Your original question:</strong> \"What protein supplements are easiest to digest during the liquid diet phase? I'm having trouble keeping some brands down.\"</p><div class='responses'><h3>Responses:</h3><p><strong>Dr. Chen</strong> (Sep 29, 2023): \"I recommend trying isolate whey protein as it's generally easier to digest. Start with small amounts.\"</p><p><strong>Community Member</strong> (Oct 1, 2023): \"I had good results with XYZ brand - very mild flavor and no stomach issues.\"</p></div>"
+            },
+            102: {
+                title: "Exercise Progress Update",
+                content: "<p>You shared your exercise progress on Sep 15, 2023.</p><p><strong>Your post:</strong> \"At 3 months post-op, I can now walk 1 mile without stopping! My goal is to start swimming next month.\"</p><div class='responses'><h3>Community Feedback:</h3><p><strong>Physical Therapist</strong> (Sep 16, 2023): \"Great progress! Swimming is an excellent next step - low impact but great exercise.\"</p><p><strong>Fellow Patient</strong> (Sep 18, 2023): \"You're doing better than me! I'm at 2 months and can only do half a mile.\"</p></div>"
+            },
+            103: {
+                title: "Emotional Support Discussion",
+                content: "<p>You sought support for emotional challenges on Aug 30, 2023.</p><p><strong>Your post:</strong> \"I'm finding myself turning to food when stressed, even though I'm not physically hungry. How have others handled this?\"</p><div class='responses'><h3>Support Received:</h3><p><strong>Dr. Williams</strong> (Sep 1, 2023): \"This is very common. Try identifying your triggers and finding alternative activities.\"</p><p><strong>Support Group</strong> (Sep 3, 2023): \"I started knitting when I feel the urge to emotional eat - keeps my hands busy!\"</p></div>"
+            }
+        };
+
+        const expertDetails = {
+            201: {
+                title: "Dr. Emily Johnson - Bariatric Surgeon",
+                content: "<p><strong>Specialty:</strong> Bariatric Surgery and Post-Operative Care</p><p><strong>Experience:</strong> 12 years performing bariatric procedures</p><p><strong>Areas of Expertise:</strong></p><ul><li>Surgical recovery guidelines</li><li>Nutritional planning post-surgery</li><li>Complication management</li><li>Long-term weight maintenance</li></ul><p><strong>Available for:</strong> Questions about surgical recovery, dietary transitions, and long-term success strategies</p>"
+            },
+            202: {
+                title: "Dr. Michael Chen - Nutrition Specialist",
+                content: "<p><strong>Specialty:</strong> Nutritional Science and Supplementation</p><p><strong>Experience:</strong> 8 years in bariatric nutrition</p><p><strong>Areas of Expertise:</strong></p><ul><li>Vitamin and mineral supplementation</li><li>Meal planning for all post-op phases</li><li>Managing dietary intolerances</li><li>Vegetarian/vegan bariatric diets</li></ul><p><strong>Available for:</strong> Questions about meeting nutritional needs, supplement regimens, and recipe ideas</p>"
+            },
+            203: {
+                title: "Dr. Sarah Williams - Psychologist",
+                content: "<p><strong>Specialty:</strong> Behavioral Health and Emotional Support</p><p><strong>Experience:</strong> 10 years supporting bariatric patients</p><p><strong>Areas of Expertise:</strong></p><ul><li>Emotional eating patterns</li><li>Body image issues</li><li>Relationship with food</li><li>Stress management techniques</li></ul><p><strong>Available for:</strong> Questions about emotional challenges, behavior modification, and mental health support</p>"
+            }
+        };
+
+        document.querySelectorAll('.message, .history-item, .expert-card').forEach(item => {
+            item.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                let details = {};
+                
+                if (this.classList.contains('message')) {
+                    details = messageDetails[id];
+                } else if (this.classList.contains('history-item')) {
+                    details = historyDetails[id];
+                } else if (this.classList.contains('expert-card')) {
+                    details = expertDetails[id];
+                }
+                
+                modalTitle.textContent = details.title;
+                modalContent.innerHTML = details.content;
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

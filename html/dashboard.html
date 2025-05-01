@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Monitoring</title>
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <script src="../js/dashbord.js" defer></script>
+
+  
+</head>
+<body>
+  <header>
+    <h1>Health Monitoring Dashboard</h1>
+  </header>
+
+  <main>
+    <section id="metrics">
+      <h2>Health Metrics</h2>
+      <div class="cards">
+        <div class="card">Heart Rate: <span id="heart-rate">--</span> bpm</div>
+        <div class="card">BMI: <span id="bmi">--</span></div>
+        <div class="card">Sleep: <span id="sleep">--</span> hrs</div>
+        <div class="card">Hydration: <span id="water">--</span> L</div>
+      </div>
+    </section>
+    <section id="bmi-calculator">
+        <h2>BMI Calculator</h2>
+        <form id="bmi-form">
+          <label>
+            Weight (kg):
+            <input type="number" id="weight" required />
+          </label>
+          <br />
+          <label>
+            Height (cm):
+            <input type="number" id="height" required />
+          </label>
+          <br />
+          <button type="submit">Calculate BMI</button>
+        </form>
+        <p id="bmi-result"></p>
+      </section>
+
+    <section id="tips">
+      <h2>Today's Health Tip</h2>
+      <p id="health-tip">Loading...</p>
+    </section>
+
+    <section id="challenges">
+      <h2>Daily Challenges</h2>
+      <ul id="challenge-list"></ul>
+    </section>
+
+    <section id="reminders">
+      <h2>Reminders</h2>
+      <ul>
+        <li><input type="checkbox" /> Take medication at 8:00 AM</li>
+        <li><input type="checkbox" /> Drink water every 2 hours</li>
+        <li><input type="checkbox" /> Walk after lunch</li>
+      </ul>
+    </section>
+  </main>
+
+  
+</body>
+</html>
