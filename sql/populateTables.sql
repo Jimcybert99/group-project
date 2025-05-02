@@ -1,11 +1,4 @@
--- Sample workouts
-INSERT INTO workout_log (workout_date, completed) VALUES
-  (CURDATE() - INTERVAL 14 DAY, 1),
-  (CURDATE() - INTERVAL 13 DAY, 1),
-  (CURDATE() - INTERVAL 10 DAY, 1),
-  (CURDATE() - INTERVAL 7 DAY, 1),
-  (CURDATE() - INTERVAL 6 DAY, 1),
-  (CURDATE() - INTERVAL 2 DAY, 1);
+
 
 -- Sample events
 INSERT INTO calendar_events (event_date, event_time, description) VALUES
