@@ -2,12 +2,24 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f7f7f7;
   margin: 0;
-  padding: 20px;
+  width: 100%;
 }
 
-header, footer {
+header {
+  background-color: #0d47a1;
+  color: white;
+  padding: 1rem;
   text-align: center;
-  margin-bottom: 20px;
+  width: 100vw;
+}
+
+footer {
+  background-color: #0d47a1;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  width: 100vw;
 }
 
 main {

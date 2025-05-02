@@ -1,12 +1,15 @@
+const exMap = {};
+
 //starter exercises
-const exMap = {
-  "Walking": "Cardio",
-  "Chair Squats": "Weighted",
-  "Arm Circles": "Cardio",
-  "Wall Push-ups": "Weighted",
-  "Resistance Band Rows": "Weighted",
-  "Stationary Cycling": "Cardio"
-};
+fetch("../php/exercise_api.php?action=fetch")
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(ex => {
+      exMap[ex.name] = ex.type; // this supports the rest of your logic
+    });
+    makeList();
+  });
+
 //reference containers
 const exBox = document.getElementById("exBox");//exercise check box
 const logArea = document.getElementById("exLog");//today's workouts
@@ -94,11 +97,10 @@ function addSet(tbl, index){
 //event handler for adding exercise
 add.addEventListener("click", () => {
   const newName = prompt("Enter exercise name:");
-  if (!newName) return; //do nothing
+  if (!newName) return;
 
-  //select type
   const typeContainer = document.createElement("div");
-  typeContainer.className = "typePopup"; // use predefined CSS class for style
+  typeContainer.className = "typePopup";
   typeContainer.innerHTML = `
     <p>Choose type:</p>
     <button id="chooseCardio">Cardio</button>
@@ -106,55 +108,125 @@ add.addEventListener("click", () => {
   `;
   document.body.appendChild(typeContainer);
 
-  // Set type and update list
-  document.getElementById("chooseCardio").onclick = () => {
-    exMap[newName] = "Cardio";
-    document.body.removeChild(typeContainer);
-    makeList();
+  const handleAdd = (type) => {
+    fetch("../php/exercise_api.php?action=add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newName, type })
+    }).then(() => {
+      exMap[newName] = type;
+      makeList();
+      document.body.removeChild(typeContainer);
+    });
   };
-  document.getElementById("chooseWeighted").onclick = () => {
-    exMap[newName] = "Weighted";
-    document.body.removeChild(typeContainer);
-    makeList();
-  };
+
+  document.getElementById("chooseCardio").onclick = () => handleAdd("Cardio");
+  document.getElementById("chooseWeighted").onclick = () => handleAdd("Weighted");
 });
+
 
 //remove exercise from list
 remove.addEventListener("click", () => {
   const marked = Array.from(exBox.querySelectorAll("input[type='checkbox']:checked")).map(c => c.value);
+
   marked.forEach(name => {
-    delete exMap[name];
-    const form = document.getElementById(`log-${name}`);
-    if (form) logArea.removeChild(form);
+    // Check if the exercise has any logged data before deleting
+fetch(`../php/exercise_api.php?action=check_logs&name=${encodeURIComponent(name)}`) 
+      .then(res => res.json())
+      .then(data => {
+        const hasLogs = data.hasLogs;
+
+        if (!hasLogs || confirm(`This will delete all workout data for "${name}". Are you sure?`)) {
+          // Proceed with deletion
+          fetch("../php/exercise_api.php?action=delete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name })
+          })
+          .then(res => res.json())
+          .then(result => {
+            if (result.success) {
+              delete exMap[name];
+              const form = document.getElementById(`log-${name}`);
+              if (form) logArea.removeChild(form);
+              makeList();
+            } else {
+              alert("Failed to delete exercise.");
+            }
+          });
+        }
+      });
   });
-  makeList();
 });
+
 
 //display workout summary
 submit.addEventListener("click", () => {
   const summary = [];
-  //compile exercise details
+  const payload = [];
+
+  // collect exercises from form...
+  // build payload and summary...
   document.querySelectorAll(".exLogBox").forEach(box => {
-    const title = box.querySelector("h3").textContent;//name
-    const table = box.querySelector("table");//weight input
-    const inputs = box.querySelectorAll("input[type='number']");//cardio input
-    //if weight
-    if (table) {
-      const rows = table.querySelectorAll("tbody tr");
-      const sets = Array.from(rows).map(row => {
-        const w = row.cells[1].querySelector("input").value || 0;
-        const r = row.cells[2].querySelector("input").value || 0;
-        return `${r} reps @ ${w} lbs`;
+    const name = box.querySelector("h3").textContent;
+    const type = exMap[name];
+    const date = new Date().toISOString().split("T")[0];
+    const table = box.querySelector("table");
+    const inputs = box.querySelectorAll("input[type='number']");
+  
+    if (type === "Cardio") {
+      const distance = parseFloat(inputs[0].value || 0);
+      const time = parseInt(inputs[1].value || 0);
+      payload.push({
+        date,
+        name,
+        type,
+        distance,
+        time,
+        sets: null,
+        reps: null,
+        weight: null
       });
-      summary.push(`${title}: ${sets.length} sets (${sets.join(", ")})`);
-    //else cardio
-    } else if (inputs.length >= 2) {
-      const dist = inputs[0].value || 0;
-      const time = inputs[1].value || 0;
-      summary.push(`${title}: ${dist} mi in ${time} min`);
+      summary.push(`${name}: ${distance} mi in ${time} min`); 
+    } else {
+      const rows = table.querySelectorAll("tbody tr");
+      const sets = [];
+  
+      rows.forEach(row => {
+        const reps = parseInt(row.cells[2].querySelector("input").value || 0);
+        const weight = parseFloat(row.cells[1].querySelector("input").value || 0);
+        payload.push({
+          date,
+          name,
+          type,
+          distance: null,
+          time: null,
+          sets: 1,
+          reps,
+          weight
+        });
+        sets.push(`${reps} reps @ ${weight} lbs`);
+      });
+  
+      summary.push(`${name}: ${sets.length} sets (${sets.join(", ")})`);
     }
   });
-  //display results in popup
+  
+  // ✅ Send to backend
+  fetch("../php/exercise_api.php?action=log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+    .then(res => res.json())
+    .then(result => {
+      console.log("Workout saved:", result);
+    })
+    .catch(err => {
+      console.error("Failed to save workout", err);
+    });
+
+  // ✅ Display summary
   const summaryList = document.getElementById("summaryList");
   summaryList.innerHTML = "";
   summary.forEach(item => {
@@ -163,11 +235,14 @@ submit.addEventListener("click", () => {
     summaryList.appendChild(li);
   });
 
-  document.getElementById("openSummary").style.display = "block";
-});
+  const popup = document.getElementById("openSummary");
+  popup.style.display = "block";
+  popup.style.visibility = "visible";
+  });
+
 //close workout summary
 document.getElementById("closeSummary").addEventListener("click", () => {
-  document.getElementById("openSummary").style.display = "none";
-});
-//render exercise list
-makeList();
+  const popup = document.getElementById("openSummary");
+  popup.style.display = "none";
+  popup.style.visibility = "hidden";
+  });

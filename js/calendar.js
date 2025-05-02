@@ -7,21 +7,9 @@ function fmtDt(offset) {
   return d.toISOString().split("T")[0];//YYY-MM-DD
 }
 
-//dummy data for workouts completed
-const workoutDays = [
-  fmtDt(-14), fmtDt(-13), fmtDt(-10), fmtDt(-7),
-  fmtDt(-6), fmtDt(-2)
-];
-
-//dummy workouts
-const events = {
-  [fmtDt(-14)]: ["Walking - 1.5 mi"],
-  [fmtDt(-13)]: ["Chair Squats - 3x10"],
-  [fmtDt(-10)]: ["Walking - 1.8 mi"],
-  [fmtDt(-7)]: ["Chair Squats - 4x12"],
-  [fmtDt(-6)]: ["Walking - 2.0 mi"],
-  [fmtDt(-2)]: ["Chair Squats - 5x14"]
-};
+// Replace dummy data with server-loaded data
+let events = {};
+let workoutDays = [];
 
 //reference html elements
 const moYr = document.getElementById("monthYear");
@@ -54,13 +42,67 @@ closeBtn.addEventListener("click", () => {
 
 //save new event and update event list
 saveBtn.addEventListener("click", () => {
-  const date = evDate.value;//date
-  const text = evTime.value + " - " + evDesc.value;//new event
-  if (!events[date]) events[date] = [];//inititalize
-  events[date].push(text);//add to list
-  showCal(currentDate);//show in calendar
-  pop.style.display = "none";//close
+  const date = evDate.value;
+  const time = evTime.value;
+  const desc = evDesc.value;
+  if (!date || !time || !desc) return;
+
+  const form = new FormData();
+  form.append("date", date);
+  form.append("time", time);
+  form.append("desc", desc);
+
+  fetch("../php/calendar_api.php?action=add", {
+    method: "POST",
+    body: form
+  }).then(() => {
+    loadData();
+    pop.style.display = "none";
+  });
 });
+
+function markWorkoutDays(logs) {
+  Object.entries(logs).forEach(([date, exercises]) => {
+    const cell = document.querySelector(`.day[data-date="${date}"]`);
+    if (cell) {
+      const check = document.createElement("span");
+      check.textContent = "✅";
+      check.style.position = "absolute";
+      check.style.top = "4px";
+      check.style.right = "4px";
+      cell.appendChild(check);
+
+      const ul = document.createElement("ul");
+      exercises.forEach(name => {
+        const li = document.createElement("li");
+        li.textContent = name;
+        ul.appendChild(li);
+      });
+      cell.appendChild(ul);
+    }
+  });
+}
+
+
+
+
+// Load events and workouts from backend
+async function loadData() {
+  try {
+    const evRes = await fetch("../php/calendar_api.php?action=fetch");
+    events = await evRes.json();
+
+    const wkRes = await fetch("../php/calendar_api.php?action=workouts");
+    workoutDays = await wkRes.json();
+
+    showCal(currentDate); // this now includes markWorkoutDays internally
+  } catch (err) {
+    console.error("Failed to load calendar data", err);
+  }
+}
+
+
+
 
 //build calendar 
 function showCal(date) {
@@ -88,25 +130,19 @@ function showCal(date) {
     const fullDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     const cell = document.createElement("div");
     cell.className = "day";
-    cell.innerHTML = `<strong>${day}</strong>`;//label
+    cell.setAttribute("data-date", fullDate);
+        cell.innerHTML = `<strong>${day}</strong>`;//label
 
     if (events[fullDate]) {
-      events[fullDate].forEach(text => {
+      events[fullDate].forEach(ev => {
         const evTxt = document.createElement("div");
         evTxt.className = "event-text";
-        evTxt.textContent = text;
-        cell.appendChild(evTxt);//display event
+        evTxt.textContent = ev.text;
+        cell.appendChild(evTxt);
       });
+      
     }
-
-    if (workoutDays.includes(fullDate)) {
-      const check = document.createElement("span");
-      check.textContent = "✅";//add checkmark if exercised
-      check.style.position = "absolute";
-      check.style.top = "4px";
-      check.style.right = "4px";
-      cell.appendChild(check);
-    }
+    
 
     //highlight current day
     if (day === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
@@ -122,26 +158,31 @@ function showCal(date) {
       dateHeader.textContent = "Schedule for " + fullDate;//show day
 
       if (events[fullDate]) {
-        events[fullDate].forEach((event, index) => {
+        events[fullDate].forEach(ev => {
           const li = document.createElement("li");
-          li.innerHTML = `${event} <button onclick="removeEvent('${fullDate}', ${index})">❌</button>`;//delete scheduled event
+          li.innerHTML = `${ev.text} <button onclick="removeEvent(${ev.id})">❌</button>`;
           evList.appendChild(li);
         });
+        
       }
       pop.style.display = "block";
     });
     calendar.appendChild(cell);//add to calendar
   }
+  markWorkoutDays(workoutDays);
+
 }
 
 //remove an event
-function removeEvent(date, i) {
-  if (events[date]) {
-    events[date].splice(i, 1);//remove element at i
-    if (events[date].length === 0) delete events[date];
-    showCal(currentDate);
-    pop.style.display = "none";
-  }
+async function removeEvent(id) {
+  await fetch("../php/calendar_api.php?action=delete", {
+    method: "POST",  
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: id })
+  });
+
+  loadData();
+  pop.style.display = "none";
 }
 
-showCal(currentDate);
+loadData();
