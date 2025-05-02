@@ -1,5 +1,5 @@
-drop TABLE calendar_events;
-drop TABLE workout_log;
-drop  table workout_details;
-drop table exercise_library;
+DROP TABLE calendar_events;
+DROP TABLE workout_log;
+DROP TABLE workout_details;
+DROP TABLE exercise_library;
 
