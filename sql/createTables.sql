@@ -9,13 +9,6 @@ CREATE TABLE IF NOT EXISTS calendar_events (
   description TEXT NOT NULL
 );
 
--- Track completed workout days
-CREATE TABLE IF NOT EXISTS workout_log (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  workout_date DATE NOT NULL,
-  completed TINYINT(1) DEFAULT 0
-);
-
 CREATE TABLE IF NOT EXISTS workout_details (
   id INT AUTO_INCREMENT PRIMARY KEY,
   date DATE NOT NULL,
