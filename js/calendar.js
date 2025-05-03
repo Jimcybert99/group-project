@@ -65,6 +65,7 @@ function markWorkoutDays(logs) {
   Object.entries(logs).forEach(([date, exercises]) => {
     const cell = document.querySelector(`.day[data-date="${date}"]`);
     if (cell) {
+      // Add checkmark
       const check = document.createElement("span");
       check.textContent = "✅";
       check.style.position = "absolute";
@@ -72,16 +73,24 @@ function markWorkoutDays(logs) {
       check.style.right = "4px";
       cell.appendChild(check);
 
+      // Create a styled bullet list for workouts
       const ul = document.createElement("ul");
+      ul.style.paddingLeft = "16px"; // indent bullets slightly
+      ul.style.margin = "4px 0";     // space around the list
+      ul.style.listStyleType = "disc"; // bullet points
+
       exercises.forEach(name => {
         const li = document.createElement("li");
+        li.className = "event-text";  // match event styling
         li.textContent = name;
         ul.appendChild(li);
       });
+
       cell.appendChild(ul);
     }
   });
 }
+
 
 
 
@@ -158,13 +167,28 @@ function showCal(date) {
       dateHeader.textContent = "Schedule for " + fullDate;//show day
 
       if (events[fullDate]) {
-        events[fullDate].forEach(ev => {
+        const toMinutes = (t) => {
+          if (!t || !/^\d{2}:\d{2}$/.test(t.trim())) return 9999;
+          const [h, m] = t.trim().split(":").map(Number);
+          return h * 60 + m;
+        };
+      
+        const sorted = [...events[fullDate]].sort((a, b) => toMinutes(a.time) - toMinutes(b.time));
+      
+        sorted.forEach(ev => {
           const li = document.createElement("li");
-          li.innerHTML = `${ev.text} <button onclick="removeEvent(${ev.id})">❌</button>`;
+      
+          const [hour, minute] = ev.time.split(":").map(Number);
+          const ampm = hour >= 12 ? "PM" : "AM";
+          const hour12 = hour % 12 || 12;
+          const formattedTime = `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      
+          li.innerHTML = `<strong>${formattedTime}</strong> – ${ev.text} <button onclick="removeEvent(${ev.id})">❌</button>`;
           evList.appendChild(li);
         });
-        
       }
+      
+      
       pop.style.display = "block";
     });
     calendar.appendChild(cell);//add to calendar

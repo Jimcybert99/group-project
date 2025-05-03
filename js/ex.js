@@ -165,15 +165,16 @@ submit.addEventListener("click", () => {
   const summary = [];
   const payload = [];
 
-  // collect exercises from form...
-  // build payload and summary...
+  // use local date in YYYY-MM-DD
+  const today = new Date();
+  const date = today.toLocaleDateString('en-CA');
+
   document.querySelectorAll(".exLogBox").forEach(box => {
     const name = box.querySelector("h3").textContent;
     const type = exMap[name];
-    const date = new Date().toISOString().split("T")[0];
     const table = box.querySelector("table");
     const inputs = box.querySelectorAll("input[type='number']");
-  
+
     if (type === "Cardio") {
       const distance = parseFloat(inputs[0].value || 0);
       const time = parseInt(inputs[1].value || 0);
@@ -187,11 +188,11 @@ submit.addEventListener("click", () => {
         reps: null,
         weight: null
       });
-      summary.push(`${name}: ${distance} mi in ${time} min`); 
+      summary.push(`${name}: ${distance} mi in ${time} min`);
     } else {
       const rows = table.querySelectorAll("tbody tr");
       const sets = [];
-  
+
       rows.forEach(row => {
         const reps = parseInt(row.cells[2].querySelector("input").value || 0);
         const weight = parseFloat(row.cells[1].querySelector("input").value || 0);
@@ -207,26 +208,53 @@ submit.addEventListener("click", () => {
         });
         sets.push(`${reps} reps @ ${weight} lbs`);
       });
-  
+
       summary.push(`${name}: ${sets.length} sets (${sets.join(", ")})`);
     }
   });
-  
-  // ✅ Send to backend
+
+  // send to backend
   fetch("../php/exercise_api.php?action=log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   })
-    .then(res => res.json())
-    .then(result => {
-      console.log("Workout saved:", result);
-    })
-    .catch(err => {
-      console.error("Failed to save workout", err);
-    });
+  .then(res => res.json())
+  .then(result => {
+    console.log("Workout saved:", result);
 
-  // ✅ Display summary
+    // Reload exercise dropdown and graph
+    fetch("../php/exercise_api.php?action=with_logs")
+      .then(res => res.json())
+      .then(data => {
+        exSel.innerHTML = "";
+        exTypes = {};
+
+        data.forEach(ex => {
+          const opt = document.createElement("option");
+          opt.value = ex.name;
+          opt.textContent = ex.name;
+          exSel.appendChild(opt);
+          exTypes[ex.name] = ex.type;
+        });
+
+        if (payload.length > 0) {
+          const lastEx = payload[payload.length - 1].name;
+          exSel.value = lastEx;
+          updateMetricOptions(exTypes[lastEx]);
+          loadProgress(lastEx);
+        }
+      });
+
+    // clear the form
+    document.querySelectorAll(".exLogBox").forEach(box => box.remove());
+    document.querySelectorAll("#exBox input[type='checkbox']").forEach(c => c.checked = false);
+  })
+  .catch(err => {
+    console.error("Failed to save workout", err);
+  });
+
+  // Display summary
   const summaryList = document.getElementById("summaryList");
   summaryList.innerHTML = "";
   summary.forEach(item => {
@@ -238,7 +266,8 @@ submit.addEventListener("click", () => {
   const popup = document.getElementById("openSummary");
   popup.style.display = "block";
   popup.style.visibility = "visible";
-  });
+});
+
 
 //close workout summary
 document.getElementById("closeSummary").addEventListener("click", () => {

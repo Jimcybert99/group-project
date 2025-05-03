@@ -41,9 +41,32 @@
     const rng = parseInt(rngSel.value);
     const now = new Date();
 
-    const logs = dData[ex] || [];
-    const plot = logs
-      .filter(e => (now - new Date(e.date)) / (1000 * 60 * 60 * 24) <= rng)
+    let logs = dData[ex] || [];
+    let plotLogs = logs;
+
+if (met === "best weight") {
+  const grouped = {};
+
+  logs.forEach(entry => {
+    const date = entry.date;
+    const weight = entry.best_weight || 0;
+    if (!grouped[date] || weight > grouped[date]) {
+      grouped[date] = weight;
+    }
+  });
+
+  plotLogs = Object.entries(grouped).map(([date, weight]) => ({ date, best_weight: weight }));
+}
+
+
+    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const plot = plotLogs
+    .filter(e => {
+        const logDate = new Date(e.date + "T00:00:00");
+        const daysAgo = (midnight - logDate) / (1000 * 60 * 60 * 24);
+        return daysAgo >= 0 && daysAgo <= rng;
+      })
+
       .map(e => {
         let y = 0;
         if (met === "distance") y = e.distance;
@@ -59,7 +82,7 @@
       
         return { x: e.date, y: parseFloat(y) };
       })
-      .filter(p => !isNaN(p.y)); // ✅ filter out invalid points
+      .filter(p => !isNaN(p.y) && p.y !== 0);// filter out invalid points
       
 
     if (chart) chart.destroy();
