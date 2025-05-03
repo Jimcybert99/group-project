@@ -6,6 +6,9 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+     min-height: 100vh;
 }
 
 header {
@@ -88,3 +91,47 @@ footer {
     padding: 1rem;
     text-align: center;
 }
+
+.settings {
+    max-width: 600px; 
+    margin: auto; 
+    text-align: left; 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px;
+}
+
+main {
+    flex: 1;
+}
+
+.home {
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #0d47a1;
+    color: white;
+  }
+  
+  .home:hover {
+    background-color: #08306b;
+  }
+
+  /*update pw btn in UserManagement*/
+form button[type="submit"] {
+    background-color: #1976d2;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #155a9c;
+  }
