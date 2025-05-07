@@ -1,0 +1,52 @@
+
+<!doctype html>
+<html lang="en">
+<!--title and styles-->
+<head>
+    <meta charset="UTF-8">
+<!--CSS file -->
+    <link rel="stylesheet" href="../css/calendar.css">
+    <title>Calendar</title>
+</head>
+<!--calendar begins here-->
+<body>
+  <!--return to home button-->
+    <a href="../html/homepage.html" class="home" >&larr; Home</a>
+  <!--contains the calendar, header has month/year and nav buttons-->
+    <div class="calendarBox" >
+        <header>
+            <h1 id="monthYear"></h1><!--month and year-->
+            <div class="buttons">
+                <button id="prev">Back</button><!--previous month-->
+                <button id="next">Next</button><!--next month-->
+            </div>
+        </header>
+        <!--grid days of the calendar-->
+        <div id="calendar" class="calendar" ></div>
+    </div>
+    <!--popup to view and update schedule-->
+    <div id="pop" class="pop">
+  <div class="schedule">
+    <span id="close" class="close">&times;</span>
+    <h2>Schedule</h2>
+    <h3 id="popupDate"></h3><!--date-->
+<ul id="eventList"></ul><!--logged events-->
+    <hr>
+    <!--add new event-->
+    <div class="newEvent">
+      <label for="eventDate">Date:</label>
+      <input type="date" id="eventDate" readonly>
+      <label for="eventTime">Time:</label>
+      <input type="time" id="eventTime">
+      <label for="eventDescription">Description:</label>
+      <textarea id="eventDescription"></textarea>
+      <!--save event button-->
+      <button id="saveEvent">Save</button>
+    </div>
+  </div>
+</div>
+    
+<!--js file -->
+<script src="../js/calendar.js?v=dev1" defer></script>
+</body>
+</html>

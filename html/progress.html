@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<!--title, style, script, and utf-8-->
+<head>
+  <meta charset="UTF-8" />
+  <title>Exercise Progress</title>
+  <link rel="stylesheet" href="../css/progress.css" />
+  <!--import scripts that allow for graphing-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<!--progress page-->
+<body>
+  <a href="./homepage.html" class="home" >&larr; Home</a><!--home button--> 
+<!--page header-->
+  <header>
+    <h1>Exercise Progress</h1>
+    <p>View workout history</p>
+  </header>
+
+  <!--filter exercises and metrics from dummy data(these will draw from the database later)-->
+  <main>
+    <div class="controls">
+      <label for="exerciseSelect">Exercise:</label>
+      <select id="exerciseSelect"></select>
+
+      <label for="metricSelect">Metric:</label>
+      <select id="metricSelect">
+        <option value="distance">Distance</option>
+        <option value="time">Time</option>
+        <option value="average speed">Average Speed</option>
+        <option value="best weight">Best Weight</option>
+        <option value="volume">Volume</option>
+        <option value="total reps">Total Reps</option>
+      </select>
+
+      <label for="timeframeSelect">Time Range:</label>
+      <select id="timeframeSelect">
+        <option value="7">Last 7 Days</option>
+        <option value="30" selected>Last 30 Days</option>
+        <option value="90">Last 3 Months</option>
+      </select>
+    </div>
+
+    <!--display the graph-->
+    <div class="chart">
+      <canvas id="progressGraph"></canvas>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; Bariatric Health Portal</p>
+  </footer>
+
+<!--js file -->
+<script src="../js/progress.js" defer></script>
+</body>
+</html>

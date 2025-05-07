@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--title and style -->
+
+    <meta charset="UTF-8">
+    <title>Bariatric Web Portal</title>
+<!--css file -->
+    <link rel="stylesheet" href="../css/homepage.css">
+</head>
+
+<!--homepage-->
+<body>
+    <header>
+        <!--create the menu hamburger in top left-->
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+
+        <h1>Bariatric Health Portal</h1>
+        <!--hamburger options menu-->
+        <div class="menu" id="menu">
+            <a href="../html/Login.php">Login</a>
+            <a href="../html/user-management.html">User Management</a>
+            <a href="../html/settings.html">Settings</a>
+            <a href="../html/help.html">Help</a>
+        </div>
+
+        <p>Mayo Clinic</p>
+
+    </header>
+    
+    <main>
+        <section class="welcome">
+            <h2>Welcome to Your Bariatric Health Portal</h2>
+            <p>Monitor and improve your health with our essential tools.</p>
+        </section>
+        <!--buttons that lead to other essential pages-->
+        <section class="buttons">
+
+            <a href="../html/dashboard.html">
+                <img src="../icons/healthicon.png" alt="Health Monitoring">
+                <div>
+                    <h2>Health Monitoring</h2>
+                    <p>See your progress and receive tips.</p>
+                </div>
+            </a>
+
+            <a href="../html/diet.php">
+                <img src="../icons/dieticon.png" alt="Diet & Nutrition">
+                <div>
+                    <h2>Diet & Nutrition</h2>
+                    <p>Track your macro and micronutrients.</p>
+                </div>
+            </a>
+
+            <a href="../html/ex.html">
+                <img src="../icons/exicon.png" alt="Exercise">
+                <div>
+                    <h2>Exercise</h2>
+                    <p>Log your physical activity.</p>
+                </div>
+            </a>
+
+            <a href="../html/calendar.html">
+                <img src="../icons/calendaricon.png" alt="Calendar">
+                <div>
+                    <h2>Calendar</h2>
+                    <p>Schedule an appointment or make reminders.</p>
+                </div>
+            </a>
+
+            <a href="../html/mental_health.php">
+                <img src="../icons/mentalicon.png" alt="Mental Health">
+                <div>
+                    <h2>Mental Health</h2>
+                    <p>Log your mental well-being.</p>
+                </div>
+            </a>
+
+            <a href="../html/Forums.php">
+                <img src="../icons/forumsicon.png" alt="Forums">
+                <div>
+                    <h2>Forums</h2>
+                    <p>Communicate with your provider or join a support group.</p>
+                </div>
+            </a>
+
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; Bariatric Health Portal</p>
+    </footer>
+    <!--script to open and close menu from hamburger icon-->
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } 
+            else {
+                menu.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

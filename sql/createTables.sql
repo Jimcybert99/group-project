@@ -1,0 +1,60 @@
+CREATE DATABASE IF NOT EXISTS bariatric_portal;
+USE bariatric_portal;
+
+
+-- Events scheduled by user
+CREATE TABLE IF NOT EXISTS calendar_events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  event_date DATE NOT NULL,
+  event_time TIME,
+  description TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS workout_details (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  date DATE NOT NULL,
+  exercise_name VARCHAR(50) NOT NULL,
+  type ENUM('Cardio', 'Weighted') NOT NULL,
+  distance FLOAT,
+  time_minutes INT,
+  sets INT,
+  reps INT,
+  weight FLOAT
+);
+
+CREATE TABLE IF NOT EXISTS exercise_library (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  type ENUM('Cardio', 'Weighted') NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE IF NOT EXISTS posts (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS mood_entries (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  mood VARCHAR(50) NOT NULL,
+  energy TINYINT NOT NULL,
+  stress TINYINT NOT NULL,
+  journal TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+

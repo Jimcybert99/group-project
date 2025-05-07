@@ -1,0 +1,206 @@
+/* ========== 通用重置 ========== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ========== 页面容器 ========== */
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+/* ========== 头部 ========== */
+header {
+  background-color: #005b96;
+  padding: 20px 0;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+header a {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+header a:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ========== 日期显示 ========== */
+.date-display {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1rem;
+  color: #005b96;
+}
+
+/* ========== 卡片式面板 ========== */
+.mood-tracker, .tips-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* ========== 情绪选项 ========== */
+.mood-options {
+  display: flex;
+  justify-content: space-around;
+  margin: 15px 0 25px;
+}
+.mood-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.mood-option .mood-icon {
+  font-size: 2.2rem;
+}
+.mood-option div:last-child {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+.mood-option:hover {
+  background: #e8f4fc;
+}
+.mood-option.selected {
+  border-color: #005b96;
+  background: #e1f0ff;
+}
+
+/* ========== 滑块样式 ========== */
+.slider-container {
+  margin: 15px 0;
+}
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #ddd;
+  outline: none;
+  transition: background 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #005b96;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #005b96;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ========== 文本输入 & 日志区 ========== */
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  margin-top: 10px;
+  transition: border-color 0.2s;
+}
+textarea:focus {
+  border-color: #005b96;
+}
+
+/* ========== 按钮 ========== */
+.btn {
+  display: inline-block;
+  background-color: #005b96;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: background 0.2s, transform 0.1s;
+}
+.btn:hover {
+  background-color: #004080;
+  transform: translateY(-1px);
+}
+
+/* ========== 提示区 ========== */
+.tips-section p {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* ========== 留言板区 ========== */
+.messages-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+.message {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 600px) {
+  .mood-options {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .mood-option {
+    flex: 1 1 30%;
+  }
+}
