@@ -18,6 +18,8 @@ if (empty($_SESSION['user_id'])) {
 
   <div class="container">
   <a href="./homepage.html">&larr; Home</a><!--home button--> 
+  <a href="./macro.html">&larr; Macro</a><!--home button--> 
+
 
 
     <!-- Top: Welcome + Logout -->
